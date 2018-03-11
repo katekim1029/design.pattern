@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Prototype Pattern</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+// http://pepa.holla.cz/wp-content/uploads/2016/08/Mastering-JavaScript-Design-Patterns.pdf
+
+var Lannister = (function () {
+    function Lannister() {
+    }
+    Lannister.prototype.clone = function () {
+        var clone = new Lannister();
+        for (var attr in this) {
+            clone[attr] = this[attr];
+        }
+        return clone;
+    };
+    return Lannister;
+})();
+
+var jamie = new Lannister();
+jamie.swordSkills = 9;
+jamie.charm = 6;
+jamie.wealth = 10;
+
+var tyrion = jamie.clone();
+tyrion.charm = 10;
+
+console.log(tyrion.wealth);
+console.log(tyrion.swordSkills);
+
+
+
+
+
+// https://addyosmani.com/resources/essentialjsdesignpatterns/book/#prototypepatternjavascript
+
+var myCar = {
+
+  name: "Ford Escort",
+
+  drive: function () {
+    console.log( "Weeee. I'm driving!" );
+  },
+
+  panic: function () {
+    console.log( "Wait. How do you stop this thing?" );
+  }
+
+};
+
+// Use Object.create to instantiate a new car
+var yourCar = Object.create( myCar );
+
+// Now we can see that one is a prototype of the other
+console.log( yourCar.name );
+
+var vehiclePrototype = {
+
+  init: function ( carModel ) {
+    this.model = carModel;
+  },
+
+  getModel: function () {
+    console.log( "The model of this vehicle is.." + this.model);
+  }
+};
+
+
+function vehicle( model ) {
+
+  function F() {};
+  F.prototype = vehiclePrototype;
+
+  var f = new F();
+
+  f.init( model );
+  return f;
+
+}
+
+var car = vehicle( "Ford Escort" );
+car.getModel();
+
+</script>
+
+</body>
+
+</html>
