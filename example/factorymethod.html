@@ -85,6 +85,76 @@ var truck = carFactory.createVehicle( {
 console.log( truck instanceof Truck );
 console.log( truck );
 
+
+
+
+
+// http://pepa.holla.cz/wp-content/uploads/2016/08/Mastering-JavaScript-Design-Patterns.pdf
+
+var Prayer = (function () {
+    function Prayer() {
+    }
+    Prayer.prototype.pray = function (godName) {
+        GodFactory.Build(godName).prayTo();
+    };
+    return Prayer;
+})();
+
+var GodDeterminant = (function () {
+    function GodDeterminant(religionName, prayerPurpose) {
+        this.religionName = religionName;
+        this.prayerPurpose = prayerPurpose;
+    }
+    return GodDeterminant;
+})();
+
+var GodFactory = (function () {
+    function GodFactory() {
+    }
+    GodFactory.Build = function (godName) {
+        if (godName === "watery")
+            return new WateryGod();
+        if (godName === "ancient")
+            return new AncientGods();
+        return new DefaultGod();
+    };
+    return GodFactory;
+})();
+
+var WateryGod = (function () {
+    function WateryGod() {
+    }
+    WateryGod.prototype.prayTo = function () {
+        console.log('Pray to WateryGod');
+    };
+    return WateryGod;
+})();
+
+var AncientGods = (function () {
+    function AncientGods() {
+    }
+    AncientGods.prototype.prayTo = function () {
+        console.log('Pray to AncientGods');
+    };
+    return AncientGods;
+})();
+
+var DefaultGod = (function () {
+    function DefaultGod() {
+    }
+    DefaultGod.prototype.prayTo = function () {
+        console.log('Pray to DefaultGod');
+    };
+    return DefaultGod;
+})();
+
+var prayer01 = new Prayer();
+prayer01.pray( "watery" );
+var prayer02 = new Prayer();
+prayer02.pray( "ancient" );
+var prayer03 = new Prayer();
+prayer03.pray();
+
 </script>
 
 </body>
