@@ -40,18 +40,17 @@ var LannisterTournamentBuilder = (function () {
         tournament.prizes.push(new Prize("Gold"));
         tournament.prizes.push(new Prize("More Gold"));
 
-        var events = tournament.events.map(function(i) {
+        var options = {}
+        options.events = tournament.events.map(function(i) {
             return i.name;
         });
-        var prizes = tournament.prizes.map(function(i) {
+        options.prizes = tournament.prizes.map(function(i) {
             return i.name;
         });
-        var attendees = tournament.attendees.map(function(i) {
+        options.attendees = tournament.attendees.map(function(i) {
             return i.name;
         });
-        console.log('Events : ' + events);
-        console.log('Prizes : ' + prizes);
-        console.log('Attendees : ' + attendees);
+        console.log(options);
 
         return tournament;
     };
@@ -68,18 +67,17 @@ var BaratheonTournamentBuilder = (function () {
         tournament.attendees.push(new Attendee("Stannis"));
         tournament.attendees.push(new Attendee("Robert"));
 
-        var events = tournament.events.map(function(i) {
+        var options = {}
+        options.events = tournament.events.map(function(i) {
             return i.name;
         });
-        var prizes = tournament.prizes.map(function(i) {
+        options.prizes = tournament.prizes.map(function(i) {
             return i.name;
         });
-        var attendees = tournament.attendees.map(function(i) {
+        options.attendees = tournament.attendees.map(function(i) {
             return i.name;
         });
-        console.log('Events : ' + events);
-        console.log('Prizes : ' + prizes);
-        console.log('Attendees : ' + attendees);
+        console.log(options);
 
         return tournament;
     };
@@ -107,10 +105,8 @@ var Attendee = (function () {
     return Attendee;
 })();
 
-var lannister = new LannisterTournamentBuilder();
-console.log( lannister.build() );
-var baratheo = new BaratheonTournamentBuilder();
-console.log( baratheo.build() );
+var lannister = new LannisterTournamentBuilder().build();
+var baratheo = new BaratheonTournamentBuilder().build();
 
 
 
