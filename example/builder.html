@@ -105,8 +105,9 @@ var Attendee = (function () {
     return Attendee;
 })();
 
-var lannister = new LannisterTournamentBuilder().build();
-var baratheo = new BaratheonTournamentBuilder().build();
+var builder = new TournamentBuilder();
+builder.build(new LannisterTournamentBuilder());
+builder.build(new BaratheonTournamentBuilder());
 
 
 
