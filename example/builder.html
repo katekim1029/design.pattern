@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Builder Pattern</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+// http://pepa.holla.cz/wp-content/uploads/2016/08/Mastering-JavaScript-Design-Patterns.pdf
+
+var Tournament = (function () {
+    function Tournament() {
+        this.events = [];
+        this.attendees = [];
+        this.prizes = [];
+    }
+    return Tournament;
+})();
+
+var TournamentBuilder = (function () {
+    function TournamentBuilder() { }
+    TournamentBuilder.prototype.build = function (builder) {
+        return builder.build();
+    };
+    return TournamentBuilder;
+})();
+
+var LannisterTournamentBuilder = (function () {
+    function LannisterTournamentBuilder() { }
+    LannisterTournamentBuilder.prototype.build = function () {
+        var tournament = new Tournament();
+        tournament.events.push(new Event("Joust"));
+        tournament.events.push(new Event("Melee"));
+
+        tournament.attendees.push(new Attendee("Jamie"));
+
+        tournament.prizes.push(new Prize("Gold"));
+        tournament.prizes.push(new Prize("More Gold"));
+
+        var events = tournament.events.map(function(i) {
+            return i.name;
+        });
+        var prizes = tournament.prizes.map(function(i) {
+            return i.name;
+        });
+        var attendees = tournament.attendees.map(function(i) {
+            return i.name;
+        });
+        console.log('Events : ' + events);
+        console.log('Prizes : ' + prizes);
+        console.log('Attendees : ' + attendees);
+
+        return tournament;
+    };
+    return LannisterTournamentBuilder;
+})();
+
+var BaratheonTournamentBuilder = (function () {
+    function BaratheonTournamentBuilder() { }
+    BaratheonTournamentBuilder.prototype.build = function () {
+        var tournament = new Tournament();
+        tournament.events.push(new Event("Joust"));
+        tournament.events.push(new Event("Melee"));
+
+        tournament.attendees.push(new Attendee("Stannis"));
+        tournament.attendees.push(new Attendee("Robert"));
+
+        var events = tournament.events.map(function(i) {
+            return i.name;
+        });
+        var prizes = tournament.prizes.map(function(i) {
+            return i.name;
+        });
+        var attendees = tournament.attendees.map(function(i) {
+            return i.name;
+        });
+        console.log('Events : ' + events);
+        console.log('Prizes : ' + prizes);
+        console.log('Attendees : ' + attendees);
+
+        return tournament;
+    };
+    return BaratheonTournamentBuilder;
+})();
+
+var Event = (function () {
+    function Event(name) {
+        this.name = name;
+    }
+    return Event;
+})();
+
+var Prize = (function () {
+    function Prize(name) {
+        this.name = name;
+    }
+    return Prize;
+})();
+
+var Attendee = (function () {
+    function Attendee(name) {
+        this.name = name;
+    }
+    return Attendee;
+})();
+
+var lannister = new LannisterTournamentBuilder();
+console.log( lannister.build() );
+var baratheo = new BaratheonTournamentBuilder();
+console.log( baratheo.build() );
+
+
+
+
+
+// http://ryanogles.by/javascript/testing/2017/03/03/an-exploration-of-javascript-builders.html
+
+var ProductBuilder = (function () {
+    function ProductBuilder() {
+        this.name = 'A Product';
+        this.price = 9.99;
+        this.category = 'other';
+    }
+
+    ProductBuilder.prototype.withName = function(name) {
+        this.name = name;
+        return this;
+    }
+
+    ProductBuilder.prototype.withPrice = function(price) {
+        this.price = price;
+        return this;
+    }
+
+    ProductBuilder.prototype.withCategory = function(category) {
+        this.category = category;
+        return this;
+    }
+
+    ProductBuilder.prototype.build = function() {
+        return {
+            name: this.name,
+            price: this.price,
+            category: this.category
+        };
+    }
+    return ProductBuilder;
+})();
+
+console.log( new ProductBuilder().withName('Harry Potter').withCategory('book').build() );
+console.log( new ProductBuilder().withName('The Lord of the Rings').withPrice('10.99').build() );
+
+</script>
+
+</body>
+
+</html>
