@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Facade Pattern</title>
+<style>
+.box { margin:30px auto;height:100px;border:1px solid #333;line-height:100px;text-align:center; }
+</style>
+</head>
+
+<body>
+
+<div id="foo" class="box">FOO</div>
+<div id="bar" class="box">BAR</div>
+<div id="baz" class="box">BAZ</div>
+
+<script type="text/javascript">
+
+// https://www.joezimjs.com/javascript/javascript-design-patterns-facade/
+
+function addEvent(element, type, func) {
+    if (window.addEventListener) {
+        element.addEventListener(type, func, false);
+    }
+    else if (window.attachEvent) {
+        element.attachEvent('on'+type, func);
+    }
+    else {
+        element['on'+type] = func;
+    }
+}
+
+// var foo = document.getElementById('foo');
+//     foo.style.color = 'red';
+//     foo.style.width = '150px';
+// var bar = document.getElementById('bar');
+//     bar.style.color = 'red';
+//     bar.style.width = '150px';
+// var baz = document.getElementById('baz');
+//     baz.style.color = 'red';
+//     baz.style.width = '150px';
+
+function setStyles(elements, styles) {
+    for (var i=0, length = elements.length; i < length; i++) {
+        var element = document.getElementById(elements[i]);
+        for (var property in styles) {
+            element.style[property] = styles[property];
+        }
+    }
+}
+
+//Now you can just write this:
+setStyles(['foo', 'bar', 'baz'], {
+    color: 'red',
+    width: '150px'
+});
+
+// https://addyosmani.com/resources/essentialjsdesignpatterns/book/#facadepatternjavascript
+
+// Facades don't just have to be used on their own, however.
+// They can also be integrated with other patterns such as the Module pattern.
+// As we can see below, our instance of the module patterns contains
+// a number of methods which have been privately defined.
+// A Facade is then used to supply a much simpler API to accessing these methods:
+
+var module = (function() {
+    var _private = {
+        i: 5,
+        get: function() {
+            console.log( "current value:" + this.i);
+        },
+        set: function( val ) {
+            this.i = val;
+        },
+        run: function() {
+            console.log( "running" );
+        },
+        jump: function(){
+            console.log( "jumping" );
+        }
+    };
+    return {
+
+        facade: function( args ) {
+            _private.set(args.val);
+            _private.get();
+            if ( args.run ) {
+                _private.run();
+            }
+        }
+
+    };
+}());
+
+// Outputs: "current value: 10" and "running"
+module.facade( {run: true, val: 10} );
+</script>
+
+</body>
+
+</html>

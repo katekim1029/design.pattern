@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Adapter Pattern</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+// https://www.joezimjs.com/javascript/javascript-design-patterns-adapter/
+
+// SIMPLE LOGGER FACTORY
+// var LoggerFactory = {
+//     getLogger: function() {
+//         return window.console;
+//     }
+// };
+
+// SHINY NEW LOGGER COMES ALONG - But its different?
+// USAGE - Notice dependency on the method 'sendLog'
+var AjaxLogger = {
+    sendLog: function(arg) {
+        var data = this.urlEncode(arg);
+
+        jQuery.ajax({
+            url: "http://example.com/log",
+            data: data
+        });
+    },
+    urlEncode: function(arg) {
+        var encodedData = encodeURI(arg);
+        return encodedData;
+    }
+};
+
+// PROBLEM: We dont have time to rewrite everything that uses LOGGER
+//  ANSWER: AjaxLoggerAdapter to the rescue!
+var AjaxLoggerAdapter = {
+    log: function(arg) {
+        AjaxLogger.sendLog(arg);
+    }
+};
+
+// UPDATE THE FACTORY
+// NOTICE - Usage of the 'log' method doesnt change (ta da!)
+var LoggerFactory = {
+    getLogger: function() {
+        // just gotta change what's returned here
+        return AjaxLoggerAdapter;
+    }
+};
+
+// USAGE - Notice dependency on the method 'log'
+var logger = LoggerFactory.getLogger();
+logger.log("something to log");
+
+</script>
+
+</body>
+
+</html>

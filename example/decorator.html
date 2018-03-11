@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Decorator Pattern</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+// https://www.joezimjs.com/javascript/javascript-design-patterns-decorator/
+
+// // Superclass
+// var Car = function() {...};
+// // Subclasses with different features
+// var CarWithPowerLocks = function() {...};
+// var CarWithPowerWindows = function() {...};
+// var CarWithPowerLocksAndPowerWindows = function() {...};
+// var CarWithAC = function() {...};
+// var CarWithACAndPowerLocks = function() {...};
+// var CarWithACAndPowerWindows = function() {...};
+// var CarWithACAndPowerLocksAndPowerWindows = function() {...};
+
+var Car = function() {
+    console.log('Assemble: build frame, add core parts');
+}
+// The decorators will also need to implement these functions
+// to comply with Car's interface.
+Car.prototype = {
+    start: function() {
+        console.log('The engine starts with roar!');
+    },
+    drive: function() {
+        console.log('Away we go!');
+    },
+    getPrice: function() {
+        return 11000.00;
+    }
+}
+
+// You need to pass in the Car (or CarDecorator) in order to
+// be able to add features to it.
+var CarDecorator = function(car) {
+    this.car = car;
+}
+// CarDecorator is implementing the same interface
+CarDecorator.prototype = {
+    start: function() {
+        this.car.start();
+    },
+    drive: function() {
+        this.car.drive();
+    },
+    getPrice: function() {
+        return this.car.getPrice();
+    }
+}
+
+var PowerLocksDecorator = function(car) {
+    // JavaScript's way of calling a parent class' constructor
+    CarDecorator.call(this, car);
+    console.log('Assemble: add power locks');
+}
+PowerLocksDecorator.prototype = new CarDecorator();
+PowerLocksDecorator.prototype.drive = function() {
+    // You can either do this
+    this.car.drive();
+    // or you can call the parent's drive function:
+    // CarDecorator.prototype.drive.call(this);
+    console.log('The doors automatically lock');
+}
+var PowerWindowsDecorator = function(car) {
+    CarDecorator.call(this, car);
+    console.log('Assemble: add power windows');
+}
+PowerWindowsDecorator.prototype = new CarDecorator();
+var ACDecorator = function(car) {
+    CarDecorator.call(this, car);
+    console.log('Assemble: add A/C unit');
+}
+ACDecorator.prototype = new CarDecorator();
+ACDecorator.prototype.start = function() {
+    this.car.start();
+    console.log('The cool air starts blowing.');
+}
+
+var car = new Car();                    // log "Assemble: build frame, add core parts"
+// give the car some power windows
+car = new PowerWindowsDecorator(car);    // log "Assemble: add power windows"
+// now some power locks and A/C
+car = new PowerLocksDecorator(car);     // log "Assemble: add power locks"
+car = new ACDecorator(car);             // log "Assemble: add A/C unit"
+// let's start this bad boy up and take a drive!
+car.start(); // log 'The engine starts with roar!' and 'The cool air starts blowing.'
+car.drive(); // log 'Away we go!' and 'The doors automatically lock'
+
+</script>
+
+</body>
+
+</html>

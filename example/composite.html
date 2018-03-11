@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Composite Pattern</title>
+<style>
+.composite-gallery { width:520px;margin:25px auto 50px; }
+.composite-gallery img { margin:0 25px; }
+</style>
+</head>
+
+<body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+// https://www.joezimjs.com/javascript/javascript-design-patterns-composite/
+
+var GalleryComposite = function (heading, id) {
+    this.children = [];
+    this.element = $('<div id="' + id + '" class="composite-gallery"></div>')
+        .append('<h2>' + heading + '</h2>');
+}
+GalleryComposite.prototype = {
+    add: function (child) {
+        this.children.push(child);
+        this.element.append(child.getElement());
+    },
+    remove: function (child) {
+        for (var node, i = 0; node = this.getChild(i); i++) {
+            if (node == child) {
+                this.children.splice(i, 1);
+                this.element.detach(child.getElement());
+                return true;
+            }
+            if (node.remove(child)) {
+                return true;
+            }
+        }
+        return false;
+    },
+    getChild: function (i) {
+        return this.children[i];
+    },
+    hide: function () {
+        for (var node, i = 0; node = this.getChild(i); i++) {
+            node.hide();
+        }
+        this.element.hide(0);
+    },
+    show: function () {
+        for (var node, i = 0; node = this.getChild(i); i++) {
+            node.show();
+        }
+        this.element.show(0);
+    },
+    getElement: function () {
+        return this.element;
+    }
+}
+
+var GalleryImage = function (src, id) {
+    this.children = [];
+    this.element = $('<img />')
+        .attr('id', id)
+        .attr('src', src);
+}
+GalleryImage.prototype = {
+    // Due to this being a leaf, it doesn't use these methods,
+    // but must implement them to count as implementing the
+    // Composite interface
+    add: function () { },
+    remove: function () { },
+    getChild: function () { },
+    hide: function () {
+        this.element.hide(0);
+    },
+    show: function () {
+        this.element.show(0);
+    },
+    getElement: function () {
+        return this.element;
+    }
+}
+
+var container = new GalleryComposite('', 'allgalleries');
+var gallery1 = new GalleryComposite('Gallery 1', 'gallery1');
+var gallery2 = new GalleryComposite('Gallery 2', 'gallery2');
+var image1 = new GalleryImage('http://webimage.10x10.co.kr/eventIMG/2018/84780/img_character_1.jpg', 'img1');
+var image2 = new GalleryImage('http://webimage.10x10.co.kr/eventIMG/2018/84780/img_character_5.jpg', 'img2');
+var image3 = new GalleryImage('http://webimage.10x10.co.kr/eventIMG/2018/84780/img_character_7.jpg', 'img3');
+var image4 = new GalleryImage('http://webimage.10x10.co.kr/eventIMG/2018/84780/img_character_10.jpg', 'img4');
+gallery1.add(image1);
+gallery1.add(image2);
+gallery2.add(image3);
+gallery2.add(image4);
+container.add(gallery1);
+container.add(gallery2);
+// Make sure to add the top container to the body,
+// otherwise it'll never show up.
+container.getElement().appendTo('body');
+container.show();
+
+</script>
+
+</body>
+
+</html>

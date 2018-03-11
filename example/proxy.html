@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Proxy Pattern</title>
+<style>
+.btn { display:block;width:300px;height:200px;margin:100px auto;font-size:50px;line-height:200px;cursor:pointer;}
+.btn.active { color:red; }
+</style>
+</head>
+
+<body>
+
+<button class="btn">CLICK!</button>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+var BarrelCalculator = (function () {
+    function BarrelCalculator() {
+    }
+    BarrelCalculator.prototype.calculateNumberNeeded = function (volume) {
+        return Math.ceil(volume / 157);
+    };
+    return BarrelCalculator;
+})();
+
+var DragonBarrelCalculator = (function () {
+    function DragonBarrelCalculator() {
+    }
+    DragonBarrelCalculator.prototype.calculateNumberNeeded = function (volume) {
+        if (this._barrelCalculator == null)
+            this._barrelCalculator = new BarrelCalculator();
+        return this._barrelCalculator.calculateNumberNeeded(volume * .77);
+    };
+    return DragonBarrelCalculator;
+})();
+
+var barrel = new BarrelCalculator();
+var dragon = new DragonBarrelCalculator();
+console.log(barrel.calculateNumberNeeded(10000)); // 64
+console.log(dragon.calculateNumberNeeded(10000)); // 50
+
+// https://addyosmani.com/resources/essentialjsdesignpatterns/book/#proxypatternjquery
+
+// If we wished to add a hard delay before the active class was added,
+// we could use setTimeout() to achieve this.
+// Unfortunately there is a small problem with this solution:
+// whatever function is passed to setTimeout() will have a different value for this within that function.
+// It will instead refer to the window object, which is not what we desire.
+
+// $( "button" ).on( "click", function () {
+//   setTimeout(function () {
+//     // "this" doesn't refer to our element!
+//     // It refers to window
+//     $( this ).addClass( "active" );
+//   });
+// });
+
+$( "button" ).on( "click", function () {
+
+    setTimeout( $.proxy( function () {
+        // "this" now refers to our element as we wanted
+        $( this ).addClass( "active" );
+    }, this), 500);
+
+    // the last "this" we're passing tells $.proxy() that our DOM element
+    // is the value we want "this" to refer to.
+});
+
+</script>
+
+</body>
+
+</html>

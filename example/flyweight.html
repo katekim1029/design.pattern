@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Flyweight Pattern</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+var Soldier = (function () {
+    function Soldier() {
+                    }
+    Soldier.prototype.Health = 10;
+    Soldier.prototype.FightingAbility = 5;
+    Soldier.prototype.Hunger = 0;
+
+    return Soldier;
+})();
+
+var soldier1 = new Soldier();
+var soldier2 = new Soldier();
+console.log(soldier1.Health); // 10
+soldier1.Health = 7;
+console.log(soldier1.Health); // 7
+console.log(soldier2.Health); // 10
+delete soldier1.Health;
+console.log(soldier1.Health); // 10
+</script>
+
+</body>
+
+</html>
