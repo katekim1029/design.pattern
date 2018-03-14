@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Command Pattern</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+// https://en.wikipedia.org/wiki/Command_pattern#JavaScript
+
+/* The Invoker function */
+"use strict";
+
+class Switch {
+  constructor() {
+    this._commands = [];
+  }
+
+  storeAndExecute(command) {
+    this._commands.push(command);
+    command.execute();
+  }
+}
+
+class Light {
+  turnOn() { console.log('turn on') }
+  turnOff() { console.log('turn off') }
+}
+
+class FlipDownCommand {
+  constructor(light) {
+    this._light = light;
+  }
+
+  execute() {
+    this._light.turnOff();
+  }
+}
+
+class FlipUpCommand {
+  constructor(light) {
+    this._light = light;
+  }
+
+  execute() {
+    this._light.turnOn();
+  }
+}
+
+var light = new Light();
+var switchUp = new FlipUpCommand(light);
+var switchDown = new FlipDownCommand(light);
+var s = new Switch();
+
+s.storeAndExecute(switchUp);
+s.storeAndExecute(switchDown);
+
+
+
+
+
+// https://addyosmani.com/resources/essentialjsdesignpatterns/book/#commandpatternjavascript
+
+(function(){
+
+  var carManager = {
+
+    // request information
+    requestInfo: function( model, id ){
+      return "The information for " + model + " with ID " + id + " is foobar";
+    },
+
+    // purchase the car
+    buyVehicle: function( model, id ){
+      return "You have successfully purchased Item " + id + ", a " + model;
+    },
+
+    // arrange a viewing
+    arrangeViewing: function( model, id ){
+      return "You have successfully booked a viewing of " + model + " ( " + id + " ) ";
+    }
+
+  };
+
+  carManager.execute = function ( name ) {
+      //return carManager[name] && carManager[name].apply( carManager, [].slice.call(arguments, 1) );
+      var result = carManager[name] && carManager[name].apply( carManager, [].slice.call(arguments, 1) );
+      console.log(result);
+  };
+  carManager.execute( "arrangeViewing", "Ferrari", "14523" );
+  carManager.execute( "requestInfo", "Ford Mondeo", "54323" );
+  carManager.execute( "requestInfo", "Ford Escort", "34232" );
+  carManager.execute( "buyVehicle", "Ford Escort", "34232" );
+
+})();
+
+</script>
+
+</body>
+
+</html>
