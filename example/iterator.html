@@ -31,6 +31,31 @@ console.log(it.next().value);  //-> 'two'
 console.log(it.next().value);  //-> 'three'
 console.log(`Are you done? ${it.next().done}`);  //-> true
 
+
+
+
+
+// sample code
+// Fibonacci number
+// 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,...
+class FibonacciIterator {
+    constructor() {
+        this.previous = 1;
+        this.beforePrevious = 1;
+    }
+    next() {
+        var current = this.previous + this.beforePrevious;
+        this.beforePrevious = this.previous;
+        this.previous = current;
+        return current;
+    }
+}
+const fib = new FibonacciIterator();
+console.log(fib.next());
+console.log(fib.next());
+console.log(fib.next());
+console.log(fib.next());
+console.log(fib.next());
 </script>
 
 </body>
