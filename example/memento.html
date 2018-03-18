@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Memento Pattern</title>
+</head>
+
+<body>
+
+<script>
+
+// http://www.dofactory.com/javascript/memento-design-pattern
+
+var Person = function(name, street, city, state) {
+    this.name = name;
+    this.street = street;
+    this.city = city;
+    this.state = state;
+}
+
+Person.prototype = {
+
+    hydrate: function() {
+        var memento = JSON.stringify(this);
+        return memento;
+    },
+
+    dehydrate: function(memento) {
+        var m = JSON.parse(memento);
+        this.name = m.name;
+        this.street = m.street;
+        this.city = m.city;
+        this.state = m.state;
+    }
+}
+
+var CareTaker = function() {
+    this.mementos = {};
+
+    this.add = function(key, memento) {
+        this.mementos[key] = memento;
+    },
+
+    this.get = function(key) {
+        return this.mementos[key];
+    }
+}
+
+function run() {
+    var mike = new Person("Mike Foley", "1112 Main", "Dallas", "TX");
+    var john = new Person("John Wang", "48th Street", "San Jose", "CA");
+    var caretaker = new CareTaker();
+
+    // save state
+    caretaker.add(1, mike.hydrate());
+    caretaker.add(2, john.hydrate());
+
+    // mess up their names
+    mike.name = "King Kong";
+    john.name = "Superman";
+    console.log(mike);
+    console.log(john);
+
+    // restore original state
+    mike.dehydrate(caretaker.get(1));
+    john.dehydrate(caretaker.get(2));
+    console.log(mike);
+    console.log(john);
+}
+run();
+
+
+
+
+
+// sample code
+
+class WorldState {
+    constructor(numberOfKings, currentKingInKingsLanding, season) {
+        this.numberOfKings = numberOfKings;
+        this.currentKingInKingsLanding = currentKingInKingsLanding;
+        this.season = season;
+    }
+}
+class Soothsayer {
+    constructor() {
+        this.startingPoints = [];
+        this.currentState = new WorldStateProvider();
+    }
+    setInitialConditions(numberOfKings, currentKingInKingsLanding, season) {
+        this.currentState.numberOfKings = numberOfKings;
+        this.currentState.currentKingInKingsLanding = currentKingInKingsLanding;
+        this.currentState.season = season;
+    }
+    alterNumberOfKingsAndForetell(numberOfKings) {
+        this.startingPoints.push(this.currentState.saveMemento());
+        this.currentState.numberOfKings = numberOfKings;
+    }
+    alterSeasonAndForetell(season) {
+        this.startingPoints.push(this.currentState.saveMemento());
+        this.currentState.season = season;
+    }
+    alterCurrentKingInKingsLandingAndForetell(currentKingInKingsLanding) {
+        this.startingPoints.push(this.currentState.saveMemento());
+        this.currentState.currentKingInKingsLanding = currentKingInKingsLanding;
+    }
+    tryADifferentChange() {
+        this.currentState.restoreMemento(this.startingPoints.pop());
+    }
+}
+class WorldStateProvider {
+    saveMemento() {
+        return new WorldState(this.numberOfKings, this.currentKingInKingsLanding, this.season);
+    }
+    restoreMemento(memento) {
+        this.numberOfKings = memento.numberOfKings;
+        this.currentKingInKingsLanding = memento.currentKingInKingsLanding;
+        this.season = memento.season;
+    }
+}
+
+</script>
+
+</body>
+
+</html>
