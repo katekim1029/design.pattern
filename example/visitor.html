@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Visitor Pattern</title>
+</head>
+
+<body>
+
+<script>
+
+// sample code
+
+class Knight {
+    constructor() {
+        this._type = "Knight";
+    }
+    printName() {
+        console.log("Knight");
+    }
+    visit(visitor) {
+        visitor.visit(this);
+    }
+}
+class FootSoldier {
+    constructor() {
+        this._type = "FootSoldier";
+    }
+    printName() {
+        console.log("FootSoldier");
+    }
+    visit(visitor) {
+        visitor.visit(this);
+    }
+}
+class Archer {
+    constructor() {
+        this._type = "Archer";
+    }
+    printName() {
+        console.log("Archer");
+    }
+    visit(visitor) {
+        visitor.visit(this);
+    }
+}
+class Lord {
+    constructor() {
+        this._type = "Lord";
+    }
+    printName() {
+        console.log("Lord");
+    }
+    visit(visitor) {
+        visitor.visit(this);
+    }
+}
+class InstanceOfExample {
+    Execute() {
+        var collection = [];
+        collection.push(new Knight());
+        collection.push(new FootSoldier());
+        collection.push(new Lord());
+        collection.push(new Archer());
+        for (var i = 0; i < collection.length; i++) {
+            if (collection[i] instanceof Knight)
+                collection[i].printName();
+            else
+                console.log("No match");
+        }
+    }
+}
+class IfExample {
+    Execute() {
+        var collection = [];
+        collection.push(new Knight());
+        collection.push(new FootSoldier());
+        collection.push(new Lord());
+        collection.push(new Archer());
+        for (var i = 0; i < collection.length; i++) {
+            if (collection[i]._type == 'Knight')
+                collection[i].printName();
+            else
+                console.log("No match");
+        }
+    }
+}
+class VisitorExample {
+    Execute() {
+        var collection = [];
+        collection.push(new Knight());
+        collection.push(new FootSoldier());
+        collection.push(new Lord());
+        collection.push(new Archer());
+        var visitor = new SelectiveNamePrinterVisitor();
+        for (var i = 0; i < collection.length; i++) {
+            collection[i].visit(visitor);
+        }
+    }
+}
+class SelectiveNamePrinterVisitor {
+    visit(memberOfArmy) {
+        if (memberOfArmy instanceof Knight) {
+            this.VisitKnight(memberOfArmy);
+        }
+        else {
+            console.log("Not a knight");
+        }
+    }
+    VisitKnight(memberOfArmy) {
+        memberOfArmy.printName();
+    }
+}
+console.log("Instance of");
+var a = new InstanceOfExample();
+a.Execute();
+console.log("Type of");
+var b = new IfExample();
+b.Execute();
+console.log("Vistor example");
+var c = new VisitorExample();
+c.Execute();
+
+</script>
+
+</body>
+
+</html>
