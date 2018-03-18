@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Interpreter Pattern</title>
+</head>
+
+<body>
+
+<script>
+
+// sample code
+
+"use strict";
+
+class Battle {
+    constructor(battleGround, agressor, defender, victor) {
+        this.battleGround = battleGround;
+        this.agressor = agressor;
+        this.defender = defender;
+        this.victor = victor;
+    }
+}
+class Parser {
+    constructor(battleText) {
+        this.battleText = battleText;
+        this.currentIndex = 0;
+        this.battleList = battleText.split("\n");
+    }
+    nextBattle() {
+        if (!this.battleList[0])
+            return null;
+        var segments = this.battleList[0].match(/\((.+?)\s?->\s?(.+?)\s?<-\s?(.+?)\s?->\s?(.+)/);
+        return new Battle(segments[2], segments[1], segments[3], segments[4]);
+    }
+}
+const text = "(Robert Baratheon -> Revier Trident <- RhaegarTargaryen) -> Robert Baratheon";
+const p = new Parser(text);
+console.log(p.nextBattle());
+
+</script>
+
+</body>
+
+</html>
