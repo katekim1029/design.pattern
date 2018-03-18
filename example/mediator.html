@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Mediator Pattern</title>
+</head>
+
+<body>
+
+<script>
+
+// http://www.dofactory.com/javascript/mediator-design-pattern
+
+var Participant = function(name) {
+    this.name = name;
+    this.chatroom = null;
+};
+
+Participant.prototype = {
+    send: function(message, to) {
+        this.chatroom.send(message, this, to);
+    },
+    receive: function(message, from) {
+        console.log(from.name + " to " + this.name + ": " + message);
+    }
+};
+
+var Chatroom = function() {
+    var participants = {};
+
+    return {
+        register: function(participant) {
+            participants[participant.name] = participant;
+            participant.chatroom = this;
+        },
+        send: function(message, from, to) {
+            if (to) {                      // single message
+                to.receive(message, from);
+            } else {                       // broadcast message
+                for (key in participants) {
+                    if (participants[key] !== from) {
+                        participants[key].receive(message, from);
+                    }
+                }
+            }
+        }
+    };
+};
+
+var run = function() {
+    var yoko = new Participant("Yoko");
+    var john = new Participant("John");
+    var paul = new Participant("Paul");
+    var ringo = new Participant("Ringo");
+
+    var chatroom = new Chatroom();
+    chatroom.register(yoko);
+    chatroom.register(john);
+    chatroom.register(paul);
+    chatroom.register(ringo);
+
+    yoko.send("All you need is love.");
+    yoko.send("I love you John.");
+    john.send("Hey, no need to broadcast", yoko);
+    paul.send("Ha, I heard that!");
+    ringo.send("Paul, what do you think?", paul);
+}();
+
+
+
+
+
+// sample code
+
+class HouseStark {
+    constructor() {
+        this.karstark = new Karstark(this);
+        this.bolton = new Bolton(this);
+        this.frey = new Frey(this);
+        this.umber = new Umber(this);
+    }
+    routeMessage(message) {
+        console.log(message);
+    }
+}
+class Karstark {
+    constructor(greatLord) {
+        this.greatLord = greatLord;
+    }
+    receiveMessage(message) {
+    }
+    sendMessage(message) {
+        this.greatLord.routeMessage(message);
+    }
+}
+class Bolton {
+    constructor(greatLord) {
+        this.greatLord = greatLord;
+    }
+    receiveMessage(message) {
+    }
+    sendMessage(message) {
+        this.greatLord.routeMessage(message);
+    }
+}
+class Frey {
+    constructor(greatLord) {
+        this.greatLord = greatLord;
+    }
+    receiveMessage(message) {
+    }
+    sendMessage(message) {
+        this.greatLord.routeMessage(message);
+    }
+}
+class Umber {
+    constructor(greatLord) {
+        this.greatLord = greatLord;
+    }
+    receiveMessage(message) {
+    }
+    sendMessage(message) {
+        this.greatLord.routeMessage(message);
+    }
+}
+const med = new HouseStark();
+const kar = new Karstark(med);
+const bol = new Bolton(med);
+const fre = new Frey(med);
+const umb = new Umber(med);
+kar.sendMessage("The blood of the First Men flows in my veins as much as yours, boy. I fought the Mad King for your father. I fought Joffrey for you. We are kin, Stark and Karstark.");
+bol.sendMessage("In my family we say: A naked man has few secrets; a flayed man, none.");
+fre.sendMessage("I hear it in my sleep! I'm not dead yet, unfortunately for you. And I'll not leave this world until they all choke on that laughter.");
+umb.sendMessage("We're farther north than any of you fuckers.");
+
+</script>
+
+</body>
+
+</html>
