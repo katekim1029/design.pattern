@@ -1,4 +1,4 @@
-# 자바스크립트 디자인 패턴
+# 자바스크립트 디자인 패턴 by 사이먼 팀스
 
 1. 재미와 이익을 주는 설계
 2. 코드 구성
@@ -12,3 +12,7 @@
 10. 테스트를 위한 패턴
 11. 고급 패턴
 12. 오늘날의 ES6 솔루션
+
+### Reference
+* Book [Mastering JavaScript Design Patterns Pdf](http://pepa.holla.cz/wp-content/uploads/2016/08/Mastering-JavaScript-Design-Patterns.pdf)
+* Code Files [Mastering JavaScript Design Patterns Second Edition](https://github.com/PacktPublishing/Mastering-JavaScript-Design-Patterns-Second-Edition)
