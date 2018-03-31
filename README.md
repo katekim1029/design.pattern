@@ -14,5 +14,5 @@
 12. 오늘날의 ES6 솔루션
 
 ### Reference
-* Book [Mastering JavaScript Design Patterns Pdf](http://pepa.holla.cz/wp-content/uploads/2016/08/Mastering-JavaScript-Design-Patterns.pdf)
+* Book Pdf [Mastering JavaScript Design Patterns](http://pepa.holla.cz/wp-content/uploads/2016/08/Mastering-JavaScript-Design-Patterns.pdf)
 * Code Files [Mastering JavaScript Design Patterns Second Edition](https://github.com/PacktPublishing/Mastering-JavaScript-Design-Patterns-Second-Edition)
